@@ -53,9 +53,9 @@ input[type="text"], input[type="tel"] { width: 100%; padding: 12px; border: 1px 
 
     <div class="calendar-box">
       <div class="cal-head">
-        <button type="button" onclick="navMonth(-1)" style="border:1px solid #cbd5e1; background:#fff; padding:4px 10px; border-radius:6px; cursor:pointer; font-weight:700;">&lt;</button>
+        <button onclick="navMonth(-1)" style="border:1px solid #cbd5e1; background:#fff; padding:4px 8px; border-radius:6px; cursor:pointer;">&lt;</button>
         <span id="cal-title">Mese</span>
-        <button type="button" onclick="navMonth(1)" style="border:1px solid #cbd5e1; background:#fff; padding:4px 10px; border-radius:6px; cursor:pointer; font-weight:700;">&gt;</button>
+        <button onclick="navMonth(1)" style="border:1px solid #cbd5e1; background:#fff; padding:4px 8px; border-radius:6px; cursor:pointer;">&gt;</button>
       </div>
       <div class="cal-grid" id="cal-grid"></div>
     </div>
@@ -76,27 +76,29 @@ input[type="text"], input[type="tel"] { width: 100%; padding: 12px; border: 1px 
     </div>
 
     <div class="btn-grid">
-      <button type="button" class="btn btn-web" onclick="submitBooking('web')">💻 Prenota via Web</button>
-      <button type="button" class="btn btn-wa" onclick="submitBooking('wa')">📲 Invia su WhatsApp</button>
+      <button class="btn btn-web" onclick="submitBooking('web')">💻 Prenota via Web</button>
+      <button class="btn btn-wa" onclick="submitBooking('wa')">📲 Invia su WhatsApp</button>
     </div>
   </div>
 </div>
 
 <div class="cookie-bar" id="ck-bar">
   <span>🍪 Questa pagina usa solo funzioni tecniche e <strong>zero cookie di profilazione</strong>.</span>
-  <button type="button" onclick="closeCookie()">OK</button>
+  <button onclick="closeCookie()">OK</button>
 </div>
 
 <div class="modal-bg" id="legal-modal">
   <div class="modal-box">
     <h3 style="margin-top:0;">🛡️ Informativa Privacy & GDPR</h3>
     <div>
-      <h4>1. Titolare del Trattamento</h4>
-      <p>I dati raccolti (Nome, Telefono, Servizi scelti) sono trattati esclusivamente dal Salone per la prenotazione e gestione degli appuntamenti (Art. 6 GDPR).</p>
-      <h4>2. Cookie Policy</h4>
-      <p>Nessun cookie di profilazione o tracciamento pubblicitario di terze parti viene utilizzato.</p>
-    </div>
-    <button type="button" onclick="closeLegal()" style="margin-top:14px; width:100%; padding:11px; background:#4f46e5; color:#fff; border:none; border-radius:10px; font-weight:700; cursor:pointer;">Chiudi</button>
+                <h4>1. Titolare del Trattamento</h4>
+                <p>Il Titolare è <strong>Salone Donna & Style</strong> (Titolare del Salone), con sede in <strong>Via Roma 1, Italia</strong>, P.IVA <strong>IT00000000000</strong>, Tel: <strong>+393330000000</strong>, Email: <strong>privacy@salone.it</strong>.</p>
+                <h4>2. Finalità e Base Giuridica</h4>
+                <p>I dati raccolti (Nome, Telefono, Servizi scelti) sono trattati esclusivamente per la prenotazione e gestione degli appuntamenti (Art. 6 GDPR) e la sicurezza dei trattamenti.</p>
+                <h4>3. Cookie Policy</h4>
+                <p>Nessun cookie di profilazione o tracciamento pubblicitario di terze parti viene utilizzato.</p>
+            </div>
+    <button onclick="closeLegal()" style="margin-top:14px; width:100%; padding:11px; background:#4f46e5; color:#fff; border:none; border-radius:10px; font-weight:700; cursor:pointer;">Chiudi</button>
   </div>
 </div>
 
@@ -105,34 +107,14 @@ input[type="text"], input[type="tel"] { width: 100%; padding: 12px; border: 1px 
     <div style="font-size:3rem; margin-bottom:10px;">🎉</div>
     <h3 style="margin-top:0; color:#065f46;">Prenotazione Web Registrata!</h3>
     <p id="success-details" style="color:#334155; line-height:1.5;"></p>
-    <button type="button" onclick="closeSuccess()" style="margin-top:14px; width:100%; padding:11px; background:#0284c7; color:#fff; border:none; border-radius:10px; font-weight:700; cursor:pointer;">Ottimo, Grazie!</button>
+    <button onclick="location.reload()" style="margin-top:14px; width:100%; padding:11px; background:#0284c7; color:#fff; border:none; border-radius:10px; font-weight:700; cursor:pointer;">Ottimo, Grazie!</button>
   </div>
 </div>
 
 <script>
-const services = [
-  { id: 1, name: "Piega Classica", cat: "Taglio & Piega", price: 18, duration: 30 },
-  { id: 2, name: "Taglio Donna", cat: "Taglio & Piega", price: 22, duration: 30 },
-  { id: 3, name: "Taglio + Piega", cat: "Taglio & Piega", price: 35, duration: 60 },
-  { id: 4, name: "Colore Ricrescita", cat: "Colore & Tecnici", price: 30, duration: 45 },
-  { id: 5, name: "Balayage / Schiariture", cat: "Colore & Tecnici", price: 65, duration: 90 },
-  { id: 6, name: "Tonalizzante / Gloss", cat: "Colore & Tecnici", price: 20, duration: 30 },
-  { id: 7, name: "Trattamento Cheratina", cat: "Trattamenti", price: 25, duration: 30 }
-];
-
-const config = {
-  salonName: "Salone Donna & Style",
-  ownerPhone: "393330000000",
-  openTime: "09:00",
-  closeTime: "19:00",
-  slotMinutes: 30
-};
-
-let busySlots = JSON.parse(localStorage.getItem('salone_web_busy_slots') || '[]');
-if (busySlots.length === 0) {
-  const td = new Date().toISOString().split('T')[0];
-  busySlots = [{ date: td, time: "10:00" }, { date: td, time: "15:30" }];
-}
+const services = [{"id":1,"name":"Piega Classica","cat":"Taglio & Piega","price":18,"duration":30},{"id":2,"name":"Taglio Donna","cat":"Taglio & Piega","price":22,"duration":30},{"id":3,"name":"Taglio + Piega","cat":"Taglio & Piega","price":35,"duration":60},{"id":4,"name":"Colore Ricrescita","cat":"Colore & Tecnici","price":30,"duration":45},{"id":5,"name":"Balayage / Schiariture","cat":"Colore & Tecnici","price":65,"duration":90},{"id":6,"name":"Tonalizzante / Gloss","cat":"Colore & Tecnici","price":20,"duration":30},{"id":7,"name":"Trattamento Cheratina","cat":"Trattamenti","price":25,"duration":30}];
+const config = {"salonName":"Salone Donna & Style","ownerName":"Titolare del Salone","address":"Via Roma 1, Italia","vat":"IT00000000000","email":"privacy@salone.it","ownerPhone":"393330000000","openTime":"09:00","closeTime":"19:00","slotMinutes":30};
+let busySlots = [{"date":"2026-10-15","time":"10:00"},{"date":"2026-10-15","time":"15:30"}];
 
 let curDate = new Date();
 let selDate = new Date().toISOString().split('T')[0];
@@ -142,8 +124,8 @@ if (localStorage.getItem('ck_ok')) document.getElementById('ck-bar').style.displ
 function closeCookie() { localStorage.setItem('ck_ok', '1'); document.getElementById('ck-bar').style.display = 'none'; }
 function openLegal() { document.getElementById('legal-modal').style.display = 'flex'; }
 function closeLegal() { document.getElementById('legal-modal').style.display = 'none'; }
-function closeSuccess() { document.getElementById('success-modal').style.display = 'none'; renderSlots(); }
 
+// Listino
 document.getElementById('srv-list').innerHTML = services.map(s => `
   <label class="srv-item">
     <span><input type="checkbox" value="${s.name}" data-price="${s.price}" onchange="calc()" style="margin-right:8px;"> ${s.name} (${s.duration} min)</span>
@@ -158,6 +140,7 @@ function calc() {
   return t;
 }
 
+// Calendario
 function navMonth(d) { curDate.setMonth(curDate.getMonth() + d); renderCal(); }
 
 function renderCal() {
@@ -229,22 +212,29 @@ function submitBooking(mode) {
   if (!phone) return alert('Inserisci il tuo Numero di Telefono!');
   if (srvs.length === 0) return alert('Seleziona almeno un servizio dal listino!');
   if (!selTime) return alert('Seleziona un orario tra quelli liberi in verde!');
-  if (!gdpr) return alert("Accetta l'Informativa Privacy per procedere!");
+  if (!gdpr) return alert('Accetta l'Informativa Privacy per procedere!');
 
   const isAlready = busySlots.some(b => b.date === selDate && b.time === selTime);
   if (isAlready) return alert('Questo orario risulta già occupato. Selezionane un altro!');
 
   const tot = calc();
-  const msg = `PRENOTAZIONE SALONE\nCliente: ${name}\nTel: ${phone}\nData: ${selDate}\nOra: ${selTime}\nServizi: ${srvs.join(', ')}\nTotale: ${tot}\nCanale: ${mode === 'web' ? 'Web Diretto' : 'WhatsApp'}\nGDPR: Accettato (${new Date().toISOString().split('T')[0]})`;
+  const msg = `PRENOTAZIONE SALONE
+Cliente: ${name}
+Tel: ${phone}
+Data: ${selDate}
+Ora: ${selTime}
+Servizi: ${srvs.join(', ')}
+Totale: ${tot}
+Canale: ${mode === 'web' ? 'Web Diretto' : 'WhatsApp'}
+GDPR: Accettato (${new Date().toISOString().split('T')[0]})`;
 
   busySlots.push({ date: selDate, time: selTime });
-  localStorage.setItem('salone_web_busy_slots', JSON.stringify(busySlots));
 
   if (mode === 'web') {
     document.getElementById('success-details').innerHTML = `Grazie <strong>${name}</strong>!<br>Il tuo appuntamento per <strong>${srvs.join(' + ')}</strong> è fissato per il giorno <strong>${selDate.split('-').reverse().join('/')}</strong> alle ore <strong>${selTime}</strong>.<br><br>Totale indicativo: € ${tot.toFixed(2)}`;
     document.getElementById('success-modal').style.display = 'flex';
   } else {
-    window.open('https://wa.me/' + config.ownerPhone.replace(/\D/g, '') + '?text=' + encodeURIComponent(msg), '_blank');
+    window.open('https://wa.me/' + config.ownerPhone.replace(/D/g, '') + '?text=' + encodeURIComponent(msg), '_blank');
   }
 }
 
