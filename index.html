@@ -5,15 +5,25 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Prenota Online - Salone Donna & Style</title>
 <style>
-body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f8fafc; margin: 0; padding: 16px; color: #0f172a; }
+body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f8fafc; margin: 0; padding: 16px 16px 80px; color: #0f172a; }
 .box { max-width: 480px; margin: 0 auto; background: #fff; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.08); border: 1px solid #e2e8f0; }
 .head { background: linear-gradient(135deg, #4f46e5, #ec4899); color: #fff; padding: 28px 20px; text-align: center; }
 .head h1 { margin: 0; font-size: 1.5rem; }
 .body { padding: 20px; }
-label { display: block; font-size: 0.85rem; font-weight: 700; color: #475569; margin-bottom: 6px; }
-input { width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 10px; font-size: 1rem; margin-bottom: 14px; box-sizing: border-box; }
+label.lbl { display: block; font-size: 0.85rem; font-weight: 700; color: #475569; margin-bottom: 6px; }
+input[type="text"], input[type="tel"], input[type="date"], input[type="time"] { width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 10px; font-size: 1rem; margin-bottom: 14px; box-sizing: border-box; }
 .srv-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 10px; margin-bottom: 8px; cursor: pointer; }
+.gdpr-box { background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 10px; padding: 12px; margin-bottom: 16px; font-size: 0.83rem; line-height: 1.45; color: #334155; }
 .btn { width: 100%; padding: 14px; background: #25D366; color: #fff; font-weight: 800; border: none; border-radius: 12px; font-size: 1.05rem; cursor: pointer; }
+.footer-legal { text-align: center; font-size: 0.78rem; color: #64748b; margin-top: 16px; }
+.footer-legal a { color: #4f46e5; font-weight: 600; text-decoration: none; }
+/* Cookie Banner Tecnico */
+.cookie-bar { position: fixed; bottom: 0; left: 0; right: 0; background: #1e1b4b; color: #fff; padding: 12px 16px; font-size: 0.82rem; display: flex; justify-content: space-between; align-items: center; gap: 12px; z-index: 999; }
+.cookie-bar button { background: #ec4899; color: #fff; border: none; padding: 8px 14px; border-radius: 8px; font-weight: 700; cursor: pointer; white-space: nowrap; }
+/* Modal Privacy */
+.modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: center; padding: 16px; z-index: 1000; }
+.modal-box { background: #fff; max-width: 540px; width: 100%; border-radius: 16px; padding: 20px; max-height: 85vh; overflow-y: auto; font-size: 0.86rem; line-height: 1.5; }
+.modal-box h4 { margin: 12px 0 4px; color: #0f172a; }
 </style>
 </head>
 <body>
@@ -23,27 +33,69 @@ input { width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 10
     <p style="margin:6px 0 0; opacity:0.9;">Prenota il tuo appuntamento in pochi secondi</p>
   </div>
   <div class="body">
-    <label>Il tuo Nome e Cognome</label>
+    <label class="lbl">Il tuo Nome e Cognome *</label>
     <input type="text" id="c-name" placeholder="Es. Maria Rossi">
-    <label>Il tuo Telefono</label>
+    <label class="lbl">Il tuo Telefono *</label>
     <input type="tel" id="c-phone" placeholder="Es. 3331234567">
-    <label>Scegli i Servizi dal Listino:</label>
+    <label class="lbl">Scegli i Servizi dal Listino:</label>
     <div id="srv-list" style="margin-bottom:14px;"></div>
-    <label>Giorno desiderato</label>
+    <label class="lbl">Giorno desiderato</label>
     <input type="date" id="c-date">
-    <label>Orario preferito</label>
+    <label class="lbl">Orario preferito</label>
     <input type="time" id="c-time" value="10:00">
-    <div style="background:#f1f5f9; padding:12px; border-radius:10px; margin-bottom:16px; display:flex; justify-content:space-between; font-weight:700;">
+    <div style="background:#f1f5f9; padding:12px; border-radius:10px; margin-bottom:14px; display:flex; justify-content:space-between; font-weight:700;">
       <span>Totale indicativo:</span>
       <span id="c-tot">€ 0,00</span>
     </div>
+    <div class="gdpr-box">
+      <label style="display:flex; align-items:flex-start; gap:8px; cursor:pointer;">
+        <input type="checkbox" id="c-gdpr" style="width:18px; height:18px; margin-top:2px; flex-shrink:0;">
+        <span>Dichiaro di aver letto l'<a href="javascript:void(0)" onclick="openModal()" style="color:#4f46e5;font-weight:700;">Informativa Privacy e Cookie Policy (GDPR UE 2016/679)</a> e acconsento al trattamento dei miei dati per la gestione dell'appuntamento tramite WhatsApp. *</span>
+      </label>
+    </div>
     <button class="btn" onclick="sendWA()">📲 Invia Richiesta su WhatsApp</button>
+    <div class="footer-legal">
+      🛡️ Zero Cookie di Profilazione • <a href="javascript:void(0)" onclick="openModal()">Privacy & Cookie Policy (GDPR)</a>
+    </div>
   </div>
 </div>
+
+<div class="cookie-bar" id="ck-bar">
+  <span>🍪 Questa pagina utilizza solo funzionalità tecniche locali e <strong>nessun cookie di profilazione o tracciamento</strong>. <a href="javascript:void(0)" onclick="openModal()" style="color:#f472b6;">Leggi Policy</a></span>
+  <button onclick="closeCookie()">OK, Ho capito</button>
+</div>
+
+<div class="modal-bg" id="leg-modal">
+  <div class="modal-box">
+    <h3 style="margin-top:0;">🛡️ Informativa Privacy & Cookie Policy</h3>
+    <div>
+                <h4>1. Titolare del Trattamento dei Dati</h4>
+                <p>Il Titolare del trattamento dei dati personali è <strong>Salone Donna & Style</strong> (Titolare del Salone), con sede in <strong>Sede del Salone</strong>, P.IVA/C.F. <strong>N/D</strong>, contattabile al numero <strong>+393330000000</strong> o tramite email all'indirizzo <strong>N/D</strong>.</p>
+                
+                <h4>2. Finalità del Trattamento e Base Giuridica (Art. 6 e Art. 9 GDPR)</h4>
+                <p>I dati personali forniti dalla cliente (Nome, Cognome, Numero di Telefono ed eventuali note tecniche/allergie) vengono trattati esclusivamente per:<br>
+                a) <strong>Gestione degli appuntamenti e comunicazioni di servizio</strong> (invio di conferme o promemoria tramite WhatsApp o SMS): base giuridica esecuzione di misure precontrattuali/contrattuali (Art. 6 par. 1 lett. b GDPR).<br>
+                b) <strong>Annotazione della scheda tecnica colore ed eventuali sensibilità cutanee o allergie</strong> (Art. 9 par. 2 lett. a GDPR): trattati esclusivamente previo consenso esplicito della cliente al fine di tutelare la sicurezza e la salute durante i trattamenti cosmetici in salone.</p>
+
+                <h4>3. Modalità di Conservazione (Archiviazione Locale senza Cloud di terze parti)</h4>
+                <p>I dati raccolti in salone sono conservati in modalità strettamente locale sul dispositivo gestionale del Titolare, protetto da credenziali, senza cessione a terzi né profilazione commerciale. L'invio della richiesta di prenotazione online avviene mediante reindirizzamento diretto sull'applicazione ufficiale WhatsApp scelta dall'utente.</p>
+
+                <h4>4. Periodo di Conservazione e Diritti dell'Interessato (Artt. 15-22 GDPR)</h4>
+                <p>I dati sono conservati per il tempo necessario all'erogazione dei servizi richiesti o fino a revoca del consenso. In qualsiasi momento la cliente può chiedere al Titolare l'accesso ai propri dati, la rettifica o la cancellazione immediata ("Diritto all'oblio") contattando il salone.</p>
+
+                <h4>5. Cookie Policy (Zero Cookie di Profilazione)</h4>
+                <p>Questa pagina web di prenotazione <strong>non utilizza cookie di profilazione, né cookie pubblicitari o di tracciamento statistico di terze parti</strong> (es. Google Analytics, Meta Pixel). Vengono impiegate esclusivamente tecnologie tecniche strettamente necessarie al funzionamento locale dell'interfaccia nel browser dell'utente, che non richiedono consenso preventivo ai sensi delle Linee Guida del Garante Privacy del 10 giugno 2021.</p>
+            </div>
+    <button onclick="closeModal()" style="margin-top:14px; width:100%; padding:12px; background:#4f46e5; color:#fff; border:none; border-radius:10px; font-weight:700; cursor:pointer;">Chiudi Informativa</button>
+  </div>
+</div>
+
 <script>
 const services = [{"id":1,"name":"Piega Classica","cat":"Taglio & Piega","price":18,"duration":35},{"id":2,"name":"Taglio Donna","cat":"Taglio & Piega","price":22,"duration":30},{"id":3,"name":"Taglio + Piega","cat":"Taglio & Piega","price":35,"duration":60},{"id":4,"name":"Colore Ricrescita","cat":"Colore & Tecnici","price":30,"duration":45},{"id":5,"name":"Balayage / Schiariture","cat":"Colore & Tecnici","price":65,"duration":120},{"id":6,"name":"Tonalizzante / Gloss","cat":"Colore & Tecnici","price":20,"duration":25},{"id":7,"name":"Trattamento Ristrutturante Cheratina","cat":"Trattamenti","price":25,"duration":20}];
 const ownerPhone = "393330000000";
 document.getElementById('c-date').value = new Date().toISOString().split('T')[0];
+if(localStorage.getItem('ck_ack_ok')) document.getElementById('ck-bar').style.display = 'none';
+
 const list = document.getElementById('srv-list');
 list.innerHTML = services.map(s => `
   <label class="srv-item">
@@ -51,27 +103,39 @@ list.innerHTML = services.map(s => `
     <strong>€ ${s.price}</strong>
   </label>
 `).join('');
+
 function calc() {
   let t = 0;
   document.querySelectorAll('#srv-list input:checked').forEach(c => t += Number(c.dataset.price));
   document.getElementById('c-tot').innerText = '€ ' + t.toFixed(2);
   return t;
 }
+function closeCookie() {
+  localStorage.setItem('ck_ack_ok', '1');
+  document.getElementById('ck-bar').style.display = 'none';
+}
+function openModal() { document.getElementById('leg-modal').style.display = 'flex'; }
+function closeModal() { document.getElementById('leg-modal').style.display = 'none'; }
+
 function sendWA() {
   const name = document.getElementById('c-name').value.trim();
   const phone = document.getElementById('c-phone').value.trim();
   const date = document.getElementById('c-date').value;
   const time = document.getElementById('c-time').value;
+  const gdpr = document.getElementById('c-gdpr').checked;
   const srvs = Array.from(document.querySelectorAll('#srv-list input:checked')).map(c => c.value);
   if (!name || srvs.length === 0) return alert('Inserisci il tuo nome e scegli almeno un servizio!');
+  if (!gdpr) return alert("Per procedere devi spuntare la casella di accettazione dell'Informativa Privacy (GDPR).");
   const tot = calc();
+  const today = new Date().toISOString().split('T')[0];
   const msg = `PRENOTAZIONE SALONE
 Cliente: ${name}
 Tel: ${phone}
 Data: ${date}
 Ora: ${time}
 Servizi: ${srvs.join(', ')}
-Totale: ${tot}`;
+Totale: ${tot}
+GDPR: Accettato (${today})`;
   window.open('https://wa.me/' + ownerPhone + '?text=' + encodeURIComponent(msg), '_blank');
 }
 </script>
